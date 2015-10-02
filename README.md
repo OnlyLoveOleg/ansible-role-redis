@@ -15,7 +15,7 @@ By default you don't need to define any variables, the role will use defaults/ma
 
 defaults/main.yml
 
-redis_install (OPTIONAL)
+`redis_install` (OPTIONAL)
 
 ```
 redis_install:
@@ -28,7 +28,7 @@ redis_install:
 Note: The role will use the URL to grab the version. The URL must end with redis-X.Y.Z.tar.gz
 
 
-redis_cfg (OPTIONAL)
+`redis_cfg` (OPTIONAL)
 
 This is the full path to the configuration template file. If not provided the role will use
 the default from the templates directory
