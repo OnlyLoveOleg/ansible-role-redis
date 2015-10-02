@@ -33,10 +33,10 @@ Note: The role will use the URL to grab the version. The URL must end with redis
 This is the full path to the configuration template file. If not provided the role will use
 the default from the templates directory
 
-Example:
+Example (Recommended to define in group_vars or host_vars):
 
 ```
-redis_cfg: /etc/ansible/group_vars/my-group/redis/redis.conf.j2
+redis_cfg: /etc/ansible/group_files/my-group/redis/redis.conf.j2
 ```
 
 
