@@ -1,0 +1,8 @@
+---
+redis_install:
+ method: src
+ directory: /opt
+ download_url: http://download.redis.io/releases/redis-3.0.4.tar.gz
+ src_file_sha256: a35e90ad581925134aa0fc92e969cc825f5cdee8e13c36a87d4d6995316112cf
+
+redis_conf: redis.conf.j2

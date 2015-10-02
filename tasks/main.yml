@@ -1,0 +1,42 @@
+---
+# ansible_distribution_release variable
+#
+# CenOS 7     - Core
+# RedHat 6    - Santiago
+# RedHat 7    - Maipo
+# Ubuntu 14   - trusty
+- name: Check for supported operating system on target
+  fail:
+    msg: "The operating system of the target machine ({{ inventory_hostname }}) is not currently supported."
+  when: ansible_distribution_release not in ['trusty']
+
+- name: Extract the Version from Download URL
+  command: echo {{redis_install.download_url | basename | regex_replace('^redis-(.*).tar.gz$', '\\1')}}
+  register: r_ver
+  when: redis_install.method == "src"
+
+- name: Print Version
+  debug: >
+    msg="Got Redis Version from URL {{r_ver.stdout}}"
+  when: redis_install.method == "src"
+
+#- name: include os specific variables
+#  include_vars: "{{ ansible_os_family }}.yml"
+
+#- name: Include Debian specific tasks to install from package
+#  include: Debian.yml
+#  when: ansible_os_family == 'Debian' and redis_install.method == "pkg"
+
+- name: Include Debian specific tasks when installing from source
+  include: Debian-SRC.yml
+  vars:
+   redis_version: "{{r_ver.stdout}}"
+  when: ansible_os_family == "Debian" and redis_install.method == "src"
+
+#- name: Include RedHat specific tasks
+#  include: RedHat.yml
+#  when: ansible_os_family == 'RedHat'
+#
+#- name: Include Suse specific tasks
+#  include: Suse.yml
+#  when: ansible_os_family == 'Suse'
