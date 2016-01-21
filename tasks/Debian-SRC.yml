@@ -7,13 +7,13 @@
   when: not redis_server.stat.exists
 
 - name: Debian-SRC | Copy the main redis.conf
-  template: >
+  template:
    src={{ redis_conf }}
    dest={{redis_install.directory}}/redis-{{redis_version}}/redis.conf
   notify: restart redis
 
 - name: Debian-SRC | Copy upstart config
-  template: >
+  template:
    src=Debian/redis-server-upstart.j2
    dest=/etc/init.d/redis-server
    owner=root group=root mode=0755

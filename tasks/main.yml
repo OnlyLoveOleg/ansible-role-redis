@@ -11,27 +11,28 @@
   when: ansible_distribution_release not in ['trusty']
 
 - name: Extract the Version from Download URL
-  command: echo {{redis_install.download_url | basename | regex_replace('^redis-(.*).tar.gz$', '\\1')}}
+  command: "echo {{ redis_install.download_url | basename | regex_replace('^redis-(.*).tar.gz$', '\\1') }}"
   register: r_ver
+  changed_when: false
   when: redis_install.method == "src"
 
 - name: Print Version
   debug: >
-    msg="Got Redis Version from URL {{r_ver.stdout}}"
+    msg="Got Redis Version from URL {{ r_ver.stdout }}"
   when: redis_install.method == "src"
 
 #- name: include os specific variables
 #  include_vars: "{{ ansible_os_family }}.yml"
 
-#- name: Include Debian specific tasks to install from package
-#  include: Debian.yml
-#  when: ansible_os_family == 'Debian' and redis_install.method == "pkg"
+- name: Include Debian specific tasks to install from package
+  include: Debian.yml
+  when: ansible_os_family == 'Debian' and redis_install.method == "pkg"
 
-- name: Include Debian specific tasks when installing from source
-  include: Debian-SRC.yml
-  vars:
-   redis_version: "{{r_ver.stdout}}"
-  when: ansible_os_family == "Debian" and redis_install.method == "src"
+#- name: Include Debian specific tasks when installing from source
+#  include: Debian-SRC.yml
+#  vars:
+#   redis_version: "{{r_ver.stdout}}"
+#  when: ansible_os_family == "Debian" and redis_install.method == "src"
 
 #- name: Include RedHat specific tasks
 #  include: RedHat.yml
