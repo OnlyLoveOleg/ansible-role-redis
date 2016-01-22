@@ -28,11 +28,11 @@
   include: Debian.yml
   when: ansible_os_family == 'Debian' and redis_install.method == "pkg"
 
-#- name: Include Debian specific tasks when installing from source
-#  include: Debian-SRC.yml
-#  vars:
-#   redis_version: "{{r_ver.stdout}}"
-#  when: ansible_os_family == "Debian" and redis_install.method == "src"
+- name: Include Debian specific tasks when installing from source
+  include: Debian-SRC.yml
+  vars:
+   redis_version: "{{r_ver.stdout}}"
+  when: ansible_os_family == "Debian" and redis_install.method == "src"
 
 #- name: Include RedHat specific tasks
 #  include: RedHat.yml
