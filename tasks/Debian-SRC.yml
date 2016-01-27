@@ -1,4 +1,12 @@
 ---
+- name: Debian-SRC | Create required directories
+  file:
+   path=/etc/redis
+   state=directory
+   owner=root
+   group=root
+   mode=0755
+
 - name: Debian-SRC | Check if redis-server executable exsists to skip build
   stat: path="{{redis_install.directory}}/redis-{{redis_version}}"
   register: redis_server
@@ -8,12 +16,20 @@
 
 - name: Debian-SRC | Copy the main redis.conf
   template:
-   src={{ redis_conf }}
-   dest={{redis_install.directory}}/redis-{{redis_version}}/redis.conf
+   src={{ redis.conf }}
+   dest=/etc/redis/redis.conf
   notify: restart redis
 
 - name: Debian-SRC | Copy upstart config
   template:
-   src=Debian/redis-server-upstart.j2
+   src=Debian/redis-server.init.j2
    dest=/etc/init.d/redis-server
-   owner=root group=root mode=0755
+   owner=root
+   group=root
+   mode=0755
+
+- name: Debian-SRC | start service and make sure it's enabled
+  service:
+   name=redis-server
+   state=started
+   enabled=true

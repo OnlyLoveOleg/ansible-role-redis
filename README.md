@@ -15,29 +15,33 @@ By default you don't need to define any variables, the role will use defaults/ma
 
 defaults/main.yml
 
-`redis_install` (OPTIONAL)
-
 ```
+---
 redis_install:
  method: src
  directory: /opt
- download_url: http://download.redis.io/releases/redis-3.0.4.tar.gz
- src_file_sha256: a35e90ad581925134aa0fc92e969cc825f5cdee8e13c36a87d4d6995316112cf
+ download_url: http://download.redis.io/releases/redis-3.0.6.tar.gz
+ src_file_sha256: 6f1e1523194558480c3782d84d88c2decf08a8e4b930c56d4df038e565b75624
+
+
+redis:
+ conf: Debian/redis.conf.j2
+
+ OPTIONAL: redis.conf can define the location of the main configuration file can be relative or full path.
 ```
 
-Note: The role will use the URL to grab the version. The URL must end with redis-X.Y.Z.tar.gz
+Note: The role will use the redis_install.download_url to extract the version.
+      ( URL must end with a filename redis-X.Y.Z.tar.gz where X.Y.Z is the version )
 
-
-`redis_cfg` (OPTIONAL)
-
-This is the full path to the configuration template file. If not provided the role will use
-the default from the templates directory
 
 Example (Recommended to define in group_vars or host_vars):
 
 ```
-redis_cfg: /etc/ansible/group_files/my-group/redis/redis.conf.j2
+redis:
+ conf: group_files/my-group/redis/redis.conf.j2
 ```
+
+FORMAT: group_files/<group>/<role>/redis.conf.j2
 
 
 License

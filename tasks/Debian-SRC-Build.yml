@@ -1,7 +1,7 @@
 ---
-- name: Debian-SRC-Build | Make sure the ansible required dependencies are installed
+- name: Debian-SRC-Build | install dependencies
   apt:
-   pkg={{item}}
+   name={{ item }}
    update_cache=yes
    state=latest
   with_items:
@@ -44,10 +44,10 @@
    dest={{redis_install.directory}}
    copy=no
 
-- name: Debian-SRC-Build | Create symlink {{redis_install.directory}}/redis -> /opt/redis-{{redis_version}}
+- name: Debian-SRC-Build | Create symlink {{ redis_install.directory }}/redis -> /opt/redis-{{redis_version}}
   file: 
-   src="{{redis_install.directory}}/redis-{{redis_version}}" 
-   dest="{{redis_install.directory}}/redis"
+   src="{{ redis_install.directory }}/redis-{{ redis_version }}" 
+   dest="{{ redis_install.directory }}/redis"
    state=link
 
 - name: Debian-SRC-Build | make
@@ -55,3 +55,19 @@
 
 - name: Debian-SRC-Build | make test
   shell: "make test > test.log chdir={{redis_install.directory}}/redis-{{redis_version}}"
+
+- name: Debian-SRC-Build | Create symlinks in /usr/bin
+  file: 
+   src="/opt/redis-{{ redis_version }}/src/{{ item }}"
+   dest=/usr/bin/{{ item }}
+   state=link
+   owner=root
+   group=root
+   mode=0755
+  with_items:
+   - redis-benchmark
+   - redis-check-aof
+   - redis-check-dump
+   - redis-cli
+   - redis-server
+   - redis-sentinel
