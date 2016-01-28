@@ -9,9 +9,11 @@
    - gcc
    - tcl
 
+
 - name: Debian-SRC-Build | Create group
   user:
    name=redis
+
 
 - name: Debian-SRC-Build | Create user
   user:
@@ -20,6 +22,7 @@
    home={{ redis_install.directory }}
    groups=redis
    comment="redis server"
+
 
 - name: Debian-SRC-Build | Create required directories
   file: 
@@ -32,11 +35,13 @@
    - /var/log/redis
    - /var/lib/redis
 
+
 - name: Debian-SRC-Build | Download Redis src file
   get_url:
    url={{ redis_install.download_url }}
    dest=/usr/local/src/{{ redis_install.download_url | basename }}
    sha256sum={{redis_install.src_file_sha256}}
+
 
 - name: Debian-SRC-Build | Extract the src Redis file
   unarchive:
@@ -44,17 +49,25 @@
    dest={{redis_install.directory}}
    copy=no
 
+
 - name: Debian-SRC-Build | Create symlink {{ redis_install.directory }}/redis -> /opt/redis-{{redis_version}}
   file: 
    src="{{ redis_install.directory }}/redis-{{ redis_version }}" 
    dest="{{ redis_install.directory }}/redis"
    state=link
 
+
 - name: Debian-SRC-Build | make
-  command: "make chdir={{redis_install.directory}}/redis-{{redis_version}}"
+  command: "make"
+  args:
+   chdir: "{{ redis_install.directory }}/redis-{{ redis_version }}"
+
 
 - name: Debian-SRC-Build | make test
-  shell: "make test > test.log chdir={{redis_install.directory}}/redis-{{redis_version}}"
+  shell: "make test > test.log 2>&1"
+  args:
+   chdir: "{{ redis_install.directory }}/redis-{{ redis_version }}"
+
 
 - name: Debian-SRC-Build | Create symlinks in /usr/bin
   file: 
