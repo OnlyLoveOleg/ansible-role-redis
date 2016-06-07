@@ -80,7 +80,7 @@
   with_items:
    - redis-benchmark
    - redis-check-aof
-   - redis-check-dump
+   - redis-check-rdb
    - redis-cli
    - redis-server
    - redis-sentinel
