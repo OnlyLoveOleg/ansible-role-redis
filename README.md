@@ -20,11 +20,10 @@ defaults/main.yml
 redis_install:
  method: src
  directory: /opt
- download_url: http://download.redis.io/releases/redis-3.0.7.tar.gz
- src_file_sha256: b2a791c4ea3bb7268795c45c6321ea5abcc24457178373e6a6e3be6372737f23
+ download_url: http://download.redis.io/releases/redis-3.2.0.tar.gz
+ src_file_sha256: 989f1af3dc0ac1828fdac48cd6c608f5a32a235046dddf823226f760c0fd8762
 
-redis:
- conf: Debian/redis.conf.j2
+redis_conf: Debian/redis.conf.j2
 
 
  OPTIONAL: redis.conf can define the location of the main configuration file can be relative or full path.
@@ -37,8 +36,7 @@ Note: The role will use the redis_install.download_url to extract the version.
 Example (Recommended to define in group_vars or host_vars):
 
 ```
-redis:
- conf: group_files/my-group/redis/redis.conf.j2
+redis_conf: group_files/my-group/redis/redis.conf.j2
 ```
 
 Recommended path structure: group_files/<group>/<role>/redis.conf.j2
