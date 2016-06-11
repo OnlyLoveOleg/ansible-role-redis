@@ -4,7 +4,7 @@ redis
 Install and manage Redis server. Currently the role installs Redis from source.
 
 Tested on:
- - Ubuntu Server 14.04 LTS x64
+ - Ubuntu Server 14.04
 
 
 Role Variables
