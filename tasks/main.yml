@@ -22,10 +22,12 @@
 
 
 - name: Include Debian specific tasks to install from package
-  include: Debian.yml
+  include: tasks/{{ ansible_os_family }}.yml
+  static: no
   when: ansible_os_family == 'Debian' and redis_install.method == "pkg"
 
 
 - name: Include Debian specific tasks when installing from source
-  include: Debian-SRC.yml
+  include: tasks/{{ ansible_os_family }}-SRC.yml
+  static: no
   when: ansible_os_family == "Debian" and redis_install.method == "src"
